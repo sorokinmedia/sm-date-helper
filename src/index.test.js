@@ -87,15 +87,48 @@ describe('deductTimezone', () => {
 });
 
 describe('secondsToReadableTime', () => {
-	it('should convert seconds to time string', () => {
-		const h = 60*60;
-		const min = 60;
-		const secs = 1;
+	it('should convert seconds to time string - hour minutes seconds', () => {
+		let h = 60*60;
+		let min = 60;
+		let secs = 1;
 		[1, 2, 5].forEach(elem => {
 			expect(secondsToReadableTime(elem*(h + min + secs)))
 				.toBe(`${elem} ${convertToPlural(elem, 'hours')}`
 					+ ` ${elem} ${convertToPlural(elem, 'minutes', 'inf')}`
 					+ ` ${elem} ${convertToPlural(elem, 'seconds', 'inf')}`)
+		});
+	});
+
+	it('should convert seconds to time string - hour seconds', () => {
+		let h = 60*60;
+		let min = 0;
+		let secs = 1;
+		[1, 2, 5].forEach(elem => {
+			expect(secondsToReadableTime(elem*(h + min + secs)))
+				.toBe(`${elem} ${convertToPlural(elem, 'hours')}`
+					+ ` ${elem} ${convertToPlural(elem, 'seconds', 'inf')}`)
+		});
+	});
+
+	it('should convert seconds to time string - minutes seconds', () => {
+		let h = 0;
+		let min = 60;
+		let secs = 1;
+		[1, 2, 5].forEach(elem => {
+			expect(secondsToReadableTime(elem*(h + min + secs)))
+				.toBe(`${elem} ${convertToPlural(elem, 'minutes', 'inf')}`
+					+ ` ${elem} ${convertToPlural(elem, 'seconds', 'inf')}`)
+		});
+	});
+
+	it('should convert seconds to time string - hour minutes', () => {
+		let h = 60*60;
+		let min = 1;
+		let secs = 0;
+		[1, 2, 5].forEach(elem => {
+			expect(secondsToReadableTime(elem*(h + min + secs)))
+				.toBe(`${elem} ${convertToPlural(elem, 'hours')}`
+					+ ` ${elem} ${convertToPlural(elem, 'minutes', 'inf')}`)
 		});
 	})
 });
