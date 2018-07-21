@@ -69,12 +69,34 @@ describe('seconds_plural', () => {
 describe('timeValueInTwoDigit', () => {
 	it('should return zero + number', () => {
 		const number = Math.random() * 9;
-		timeValueInTwoDigit(number, '0' + number)
+		expect(timeValueInTwoDigit(number)).toBe('0' + number)
 	});
 
 	it('should return number', () => {
 		const number = Math.random() * 100;
-		timeValueInTwoDigit(number, number)
+		expect(timeValueInTwoDigit(number)).toBe(number.toString())
+	})
+});
+
+describe('deductTimezone', () => {
+	it('should deduct time difference', () => {
+		const date = new Date();
+		const timeZoneOffset = new Date().getTimezoneOffset();
+		expect(deductTimezone(date.getTime() - timeZoneOffset*1000*60)).toBe(date.getTime())
+	});
+});
+
+describe('secondsToReadableTime', () => {
+	it('should convert seconds to time string', () => {
+		const h = 60*60;
+		const min = 60;
+		const secs = 1;
+		[1, 2, 5].forEach(elem => {
+			expect(secondsToReadableTime(elem*(h + min + secs)))
+				.toBe(`${elem} ${convertToPlural(elem, 'hours')}`
+					+ ` ${elem} ${convertToPlural(elem, 'minutes', 'inf')}`
+					+ ` ${elem} ${convertToPlural(elem, 'seconds', 'inf')}`)
+		});
 	})
 });
 

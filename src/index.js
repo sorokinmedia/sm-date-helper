@@ -1,13 +1,16 @@
 /**
  * @param $n Integer Число
  * @param $type String hours, days, minutes, seconds, rubl
+ * @param mode String incl, inf
  * @return mixed
+ * Отвечает на вопрос "Сколько ждать?"(для времени), "Сколько?"
  */
-export function convertToPlural($n, $type="hours"){
+export function convertToPlural($n, $type="hours", mode = 'incl') {
+
 	let  $_days = ['день', 'дня', 'дней'];
 	let  $_chars = ['символ', 'символа', 'символов'];
-	let  $_minutes = ['минуту', 'минуты', 'минут'];
-	let  $_seconds = ['секунду', 'секунды', 'секунд', 'секунда'];
+	let  $_minutes = [mode === 'incl' ? 'минуту' : 'минута', 'минуты', 'минут'];
+	let  $_seconds = [mode === 'incl' ? 'секунду' : 'секунда', 'секунды', 'секунд', 'секунда'];
 	let  $_hours = ['час', 'часа', 'часов'];
 	let  $_rubl = ['рубль', 'рубля', 'рублей'];
 	let  $_times = ['раз', 'раза', 'раз'];
@@ -42,6 +45,9 @@ export function plural_type($n) {
 	return ($n%10==1 && $n%100!=11 ? 0 : ($n%10>=2 && $n%10<=4 && ($n%100<10 || $n%100>=20) ? 1 : 2));
 }
 
+/**
+ * Отвечает на вопрос "Сколько время?"
+ **/
 export function seconds_plural($n) {
 	return ($n%10==1 && $n%100!=11 ? 'секунда' : ($n%10>=2 && $n%10<=4 && ($n%100<10 || $n%100>=20) ? 'секунды' : 'секунд'));
 }
@@ -113,8 +119,8 @@ export function timestampToReadableDateWithSecons(tamp) {
 	return timestampToReadableDate(tamp) + ':' + timeValueInTwoDigit(dateObj.getSeconds())
 }
 
-export function deductTimezone(date) {
-	return date + (new Date).getTimezoneOffset()*60*1000
+export function deductTimezone(miliseconds) {
+	return miliseconds + (new Date).getTimezoneOffset()*60*1000
 }
 
 export function getTimeLeft(timeNow, timeEnd) {
@@ -137,9 +143,9 @@ export function secondsToReadableTime(secs) {
 	const seconds = secs - computedMinutes*60 - computedHours*3600
 
 	const hours = computedHours ? computedHours + ' ' + convertToPlural(computedHours, 'hours') + ' ' : '',
-		minutes = computedMinutes ? computedMinutes + ' ' + convertToPlural(computedMinutes, 'minutes') + ' ' : '';
+		minutes = computedMinutes ? computedMinutes + ' ' + convertToPlural(computedMinutes, 'minutes', 'inf') + ' ' : '';
 
-	return hours + minutes + seconds + ' ' + seconds_plural(seconds, 'seconds')
+	return hours + minutes + seconds + ' ' + convertToPlural(seconds, 'seconds', 'inf')
 }
 
 export function secondsToRedableHoursAndMinutes(secs) {
