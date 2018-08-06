@@ -123,14 +123,47 @@ describe('secondsToReadableTime', () => {
 
 	it('should convert seconds to time string - hour minutes', () => {
 		let h = 60*60;
-		let min = 1;
+		let min = 60;
 		let secs = 0;
 		[1, 2, 5].forEach(elem => {
 			expect(secondsToReadableTime(elem*(h + min + secs)))
 				.toBe(`${elem} ${convertToPlural(elem, 'hours')}`
-					+ ` ${elem} ${convertToPlural(elem, 'minutes', 'inf')}`)
+					+ ` ${elem} ${convertToPlural(elem, 'minutes', 'inf')}`
+				)
+		});
+	});
+
+});
+
+describe('seconds to readable days and hours', () => {
+	it('should convert seconds to days and hours', () => {
+		let d = 24*60*60;
+		let h = 60*60;
+		let m = 1;
+		let s = 1;
+		[1, 2, 5].forEach(elem => {
+			expect(secondsToRedableDH(elem*(d + h + m + s)))
+				.toBe(`${elem} ${convertToPlural(elem, 'days')}`
+					+ ` ${elem} ${convertToPlural(elem, 'hours')}`
+				)
 		});
 	})
 });
+
+describe('seconds to readable days and hours and minutes', () => {
+	it('should convert seconds to days and hours and minutes', () => {
+		let d = 24*60*60;
+		let h = 60*60;
+		let m = 1;
+		let s = 1;
+		[1, 2, 5].forEach(elem => {
+			expect(secondsToRedableDHM(elem*(d + h + m + s)))
+				.toBe(`${elem} ${convertToPlural(elem, 'days')}`
+					+ ` ${elem} ${convertToPlural(elem, 'hours')}`
+				)
+		});
+	})
+});
+
 
 

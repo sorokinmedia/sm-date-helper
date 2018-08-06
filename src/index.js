@@ -10,7 +10,7 @@ export function convertToPlural($n, $type="hours", mode = 'incl') {
 	let  $_days = ['день', 'дня', 'дней'];
 	let  $_chars = ['символ', 'символа', 'символов'];
 	let  $_minutes = [mode === 'incl' ? 'минуту' : 'минута', 'минуты', 'минут'];
-	let  $_seconds = [mode === 'incl' ? 'секунду' : 'секунда', 'секунды', 'секунд', 'секунда'];
+	let  $_seconds = [mode === 'incl' ? 'секунду' : 'секунда', 'секунды', 'секунд'];
 	let  $_hours = ['час', 'часа', 'часов'];
 	let  $_rubl = ['рубль', 'рубля', 'рублей'];
 	let  $_times = ['раз', 'раза', 'раз'];
@@ -138,14 +138,19 @@ export function getTimeLeft(timeNow, timeEnd) {
 }
 
 export function secondsToReadableTime(secs) {
-	const computedHours = Math.floor(secs/3600)
-	const computedMinutes = Math.floor((secs - computedHours*3600)/60)
-	const seconds = secs - computedMinutes*60 - computedHours*3600
+	const computedHours = Math.floor(secs/3600);
+	const computedMinutes = Math.floor((secs - computedHours*3600)/60);
+	const computedSeconds = secs - computedMinutes*60 - computedHours*3600;
 
-	const hours = computedHours ? computedHours + ' ' + convertToPlural(computedHours, 'hours') + ' ' : '',
-		minutes = computedMinutes ? computedMinutes + ' ' + convertToPlural(computedMinutes, 'minutes', 'inf') + ' ' : '';
+	const hours = computedHours ? computedHours + ' ' + convertToPlural(computedHours, 'hours') : '',
+		minutes = computedMinutes ? computedMinutes + ' ' + convertToPlural(computedMinutes, 'minutes', 'inf') : '',
+		seconds = computedSeconds ? computedSeconds + ' ' + convertToPlural(computedSeconds, 'seconds', 'inf') : '';
 
-	return hours + minutes + seconds + ' ' + convertToPlural(seconds, 'seconds', 'inf')
+	return buildTimeString([hours, minutes, seconds])
+}
+
+export function buildTimeString(timesArr) {
+	return timesArr.reduce((acc, elem) => elem ? acc ? acc + ' ' + elem : elem : acc, '')
 }
 
 export function secondsToRedableHoursAndMinutes(secs) {
@@ -154,7 +159,7 @@ export function secondsToRedableHoursAndMinutes(secs) {
 	const seconds = secs - computedMinutes*60 - computedHours*3600
 
 	const hours = computedHours ? computedHours + ' ' + convertToPlural(computedHours, 'hours') + ' ' : '',
-		minutes = computedMinutes ? computedMinutes + ' ' + convertToPlural(computedMinutes, 'minutes') + ' ' : '';
+		minutes = computedMinutes ? computedMinutes + ' ' + convertToPlural(computedMinutes, 'minutes') : '';
 
 	return hours + minutes
 }
@@ -171,7 +176,7 @@ export function secondsToRedableDH(secs) {
 	const daysStr = computedDays ? computedDays + ' ' + convertToPlural(computedDays, 'days') + ' ' : '';
 	const computedHours = Math.floor((secs - computedDays*3600*24)/3600);
 
-	return daysStr + ' ' + computedHours + ' ' + convertToPlural(computedHours, 'hours')
+	return daysStr + computedHours + ' ' + convertToPlural(computedHours, 'hours')
 }
 
 export function dateToPHPUnix(date) {
