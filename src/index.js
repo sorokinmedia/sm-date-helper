@@ -106,16 +106,14 @@ export function timestampToReadableDate(tamp) {
 		+ timeValueInTwoDigit(dateObj.getMinutes())
 }
 
-
-
 export function timestampToReadableDateToOneDay(tamp) {
 	const dateObj = new Date(Number(tamp))
 	return dateObj.getDate() + ' ' + monthAsWord(Number(dateObj.getMonth())) + ' '
 		+ dateObj.getFullYear() + 'г.'
 }
 
-export function timestampToReadableDateWithSecons(tamp) {
-	const dateObj = new Date(Number(tamp))
+export function timestampToReadableDateWithSeconds(tamp) {
+	const dateObj = new Date(Number(tamp));
 	return timestampToReadableDate(tamp) + ':' + timeValueInTwoDigit(dateObj.getSeconds())
 }
 
@@ -128,13 +126,13 @@ export function getTimeLeft(timeNow, timeEnd) {
 	const days = interval/1000/60/60/24;
 	const hours = days*24%24;
 
-	return Math.floor(days)
-		+ ' '
-		+ convertToPlural(Math.floor(days), 'days')
-		+ ' и '
-		+ Math.floor(hours)
-		+ ' '
-		+ convertToPlural(Math.ceil(hours))
+	const daysFloored = Math.floor(days);
+	const hoursFloored = Math.floor(hours);
+
+	const daysStr =  daysFloored ? daysFloored + ' ' + convertToPlural(daysFloored, 'days') : '';
+	const hoursStr = hoursFloored ? hoursFloored + ' ' + convertToPlural(Math.ceil(hours)) : '';
+
+	return buildTimeString([daysStr, hoursStr], ' и ');
 }
 
 export function secondsToReadableTime(secs) {
@@ -149,26 +147,25 @@ export function secondsToReadableTime(secs) {
 	return buildTimeString([hours, minutes, seconds])
 }
 
-export function buildTimeString(timesArr) {
-	return timesArr.reduce((acc, elem) => elem ? acc ? acc + ' ' + elem : elem : acc, '')
+export function buildTimeString(timesArr, delimiter = ' ') {
+	return timesArr.reduce((acc, elem) => elem ? acc ? acc + delimiter + elem : elem : acc, '')
 }
 
 export function secondsToRedableHoursAndMinutes(secs) {
-	const computedHours = Math.floor(secs/3600)
-	const computedMinutes = Math.floor((secs - computedHours*3600)/60)
-	const seconds = secs - computedMinutes*60 - computedHours*3600
+	const computedHours = Math.floor(secs/3600);
+	const computedMinutes = Math.floor((secs - computedHours*3600)/60);
 
-	const hours = computedHours ? computedHours + ' ' + convertToPlural(computedHours, 'hours') + ' ' : '',
+	const hours = computedHours ? computedHours + ' ' + convertToPlural(computedHours, 'hours') : '',
 		minutes = computedMinutes ? computedMinutes + ' ' + convertToPlural(computedMinutes, 'minutes') : '';
 
-	return hours + minutes
+	return buildTimeString([hours, minutes])
 }
 
 export function secondsToRedableDHM(secs) {
 	const computedDays = Math.floor(secs/3600/24)
-	const daysStr = computedDays ? computedDays + ' ' + convertToPlural(computedDays, 'days') + ' ' : '';
+	const daysStr = computedDays ? computedDays + ' ' + convertToPlural(computedDays, 'days') : '';
 
-	return daysStr + ' ' + secondsToRedableHoursAndMinutes(secs - computedDays*3600*24)
+	return buildTimeString([daysStr, secondsToRedableHoursAndMinutes(secs - computedDays*3600*24)]);
 }
 
 export function secondsToRedableDH(secs) {
