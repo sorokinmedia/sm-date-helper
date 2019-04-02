@@ -51,14 +51,13 @@
 	},
 	"scripts": {
 		"start": "webpack-dev-server --hot --inline --mode development",
+		"prepublishOnly": "npm run release",
 		"release": "npm run build:dev && npm run build:prod",
-		"patch": "npm version patch",
-		"publish": "npm publish",
 		"build:prod": "cross-env NODE_ENV=production rollup -c",
 		"build:dev": "cross-env NODE_ENV=development rollup -c",
-		"test": "jest",
-		"test:coverage": "jest --coverage --watchAll",
-		"test:watch": "npm run test -- --watchAll"
+		"test": "jest --no-cache ",
+		"test:coverage": "jest --no-cache --coverage --watch",
+		"test:watch": "jest --no-cache --watch"
 	},
 	"jest": {
 		"collectCoverageFrom": [
