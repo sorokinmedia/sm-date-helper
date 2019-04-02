@@ -5,19 +5,19 @@
 	"main": "dist/index.js",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/varenik163/sm-date-helper.git"
+		"url": "git+https://github.com/sorokinmedia/sm-date-helper.git"
 	},
 	"keywords": [
 		"react",
 		"components",
 		"string"
 	],
-	"author": "varenik163",
+	"author": "sorokinmedia",
 	"license": "BSD-3-Clause",
 	"bugs": {
-		"url": "https://github.com/varenik163/sm-date-helper/issues"
+		"url": "https://github.com/sorokinmedia/sm-date-helper/issues"
 	},
-	"homepage": "https://github.com/varenik163/sm-date-helper#readme",
+	"homepage": "https://github.com/sorokinmedia/sm-date-helper#readme",
 	"peerDependencies": {},
 	"devDependencies": {
 		"babel-core": "^6.26.0",
